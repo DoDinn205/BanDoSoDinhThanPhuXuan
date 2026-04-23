@@ -166,6 +166,7 @@ function openDetail(title, desc, images = []) {
 
   map.dragging.disable();
   map.touchZoom.disable();
+  map.scrollWheelZoom.disable();
 
   document.getElementById("detailModal").style.display = "flex";
 
@@ -208,12 +209,31 @@ function openDetail(title, desc, images = []) {
 
   // mặc định mở tab thông tin
   showTab("info");
+
+  setTimeout(() => {
+
+    const modal = document.querySelector('.modal-content');
+
+    if (modal) {
+
+      modal.addEventListener('touchstart', e => {
+        e.stopPropagation();
+      }, { passive: true });
+
+      modal.addEventListener('touchmove', e => {
+        e.stopPropagation();
+      }, { passive: true });
+
+    }
+
+  }, 100);
 }
 
 // Đóng
 function closeModal() {
   map.dragging.enable();
   map.touchZoom.enable();
+  map.scrollWheelZoom.enable();
   document.getElementById("detailModal").style.display = "none";
 }
 
@@ -431,4 +451,4 @@ addMarkerPx(1287000, 1873600, "Hội Đồng", "- Tên hiện vật: Bàn thờ 
 addMarkerPx(2686000, 2016000, "Miếu thờ Quan Thánh Đế", "- Tên hiện vật: Đền thờ Quan Thánh Đế<br>- Niên đại: Không rõ (gắn với quá trình hình thành đình)<br>- Chất liệu: Miếu bê-tông, nền ốp gạch men, mái lợp tôn; bài vị kiếng tráng thủy, khung gỗ<br>- Vị trí: Góc trái đình, mặt chính hướng ra cổng đình<br>- Miêu tả hiện vật: Miếu thờ Quan Đế Thánh Quân là một ngôi miếu nhỏ bằng bê-tông, nền ốp gạch men, mái lợp tôn. Trong miếu đặt hai bài vị Quan Đế Thánh Quân và Đinh Phước Táo Quân bằng kiếng tráng thủy, khung gỗ.<br>Trên bài vị Quan Đế Thánh Quân đề các chữ:<br>忠 義 無 餘 地<br>春 秋 不 老 千<br>Phiên âm:<br>Trung nghĩa vô dư địa<br>Xuân thu bất lão thiên.<br>(Nghĩa:<br>Lòng trung nghĩa không còn đất chứa<br>Sách Xuân Thu trẻ mãi ngang trời.)<br>- Giá trị hiện vật: Quan Đế Thánh Quân (Quan Công) là biểu tượng của trung nghĩa, chính trực và tiết tháo trong tín ngưỡng dân gian. Việc thờ Quan Thánh Đế trong khuôn viên đình thể hiện niềm tôn kính đối với bậc trung thần, đồng thời gửi gắm ước nguyện về chính nghĩa, bình an và bảo hộ cho dân làng.", ["AnhCacBanTho/QUANTHANHDE.JPG"]);
 addMarkerPx(2664000, 1520000, "Miếu thờ Thần Nông", "- Tên hiện vật: Miếu thờ Thần Nông<br>- Niên đại: Không rõ (gắn với quá trình hình thành đình)<br>- Chất liệu: Bệ thờ ốp gạch men màu đỏ, mái che tôn<br>- Vị trí: Giữa khuôn viên, sát ranh phía trước đình, phía sau bình phong Thần Hổ<br>- Miêu tả hiện vật: Bệ thờ Thần Nông được bố trí ngoài sân đình, phía sau bình phong Thần Hổ, mang đặc trưng thờ tự truyền thống Nam Bộ. Hai bên gắn đôi câu đối chữ Hán:<br>俎 豆 千 秋 因 校 稼<br>馨 香 萬 古 為 明 農<br>Phiên âm:<br>Trở đậu thiên thu, nhân giáo giá<br>Hinh hương vạn cổ, vị minh nông.<br>(Nghĩa:<br>Cúng tế ngàn năm vì được dạy gieo cấy<br>Thơm tho muôn thuở bởi nông nghiệp sáng ngời.)<br>- Giá trị hiện vật: Ngay từ buổi đầu hình thành làng xã, Thần Nông đã được đem vào đình làng thờ cùng với Thần Thành Hoàng Bổn Cảnh. Thông thường, bàn thờ Thần Nông được đặt trước sân đình, để lộ thiên, không mái che.<br>Ý niệm về Thần Nông không chỉ tồn tại trong tâm thức dân gian mà còn được các triều đại phong kiến coi trọng, bởi đời sống người dân gắn liền với nền nông nghiệp lúa nước.<br>Thần Nông là vị thần dạy dân cày cấy, gặt hái, giúp mùa màng tốt tươi, mang lại ấm no sung túc, nhờ vậy nghề nông phát đạt.", ["AnhCacBanTho/THANNONG.JPG"]);
 addMarkerPx(2717000, 1232000, "Miếu thờ Thổ Thần", "- Tên hiện vật: Miếu thờ Thổ Thần<br>- Niên đại: Không rõ (gắn với quá trình hình thành đình)<br>- Chất liệu: Miếu xi măng quét vôi trắng, mái tôn<br>- Vị trí: Bên phải bàn thờ bình phong Thần Hổ, cạnh gốc cây Gừa cổ thụ<br>- Miêu tả hiện vật: Đây là một ngôi miếu nhỏ bằng xi măng, quét vôi trắng, mái tôn, nằm kề bên một gốc cây Gừa nhánh vươn cao, tán xòe rộng đã trên trăm năm tuổi.<br>Hai bên miếu khắc câu đối chữ quốc ngữ:<br>Nhất niên thanh thới bằng thần hổ<br>Tứ quý vinh hoa lạy thánh thần<br>Phiên nghĩa:<br>Trọn năm khỏe mạnh nhờ thần giúp<br>Bốn mùa vinh sang cậy ở thánh hiền.<br>Bên trong miếu chạm các chữ Hán:<br>五 方 五 土 龍 神<br>Phiên âm:<br>Ngũ phương ngũ thổ long thần<br>- Giá trị hiện vật: Nội dung thờ đất đai sông nước. Theo truyền thống Á Đông, Thổ Thần được xem là vị thần cai quản, chăm nom, đem đến sự an lành cho đất đai, nhà cửa. Bàn thờ Thổ Thần luôn được đặt áp nền đất, mặt chính hướng ra cửa.", ["AnhCacBanTho/THOTHAN.JPG"]);
-addMarkerPx(1632000, 1604800, "Nhà thờ Chủ tịch Hồ Chí Minh", "Đây là Nhà thờ Chủ tịch Hồ Chí Minh và trưng bày tiểu sử về Bác",["AnhHCM/HCM1.JPG","AnhHCM/HCM2.JPG","AnhHCM/HCM3.JPG","AnhHCM/HCM4.JPG","AnhHCM/HCM5.JPG"]);
+addMarkerPx(1632000, 1604800, "Nhà thờ Chủ tịch Hồ Chí Minh", "Đây là Nhà thờ Chủ tịch Hồ Chí Minh và trưng bày tiểu sử về Bác", ["AnhHCM/HCM1.JPG", "AnhHCM/HCM2.JPG", "AnhHCM/HCM3.JPG", "AnhHCM/HCM4.JPG", "AnhHCM/HCM5.JPG"]);

@@ -201,7 +201,6 @@
         height: 78px;
       }
 
-
       .logo {
         position: static;
       }
@@ -214,17 +213,12 @@
       .title {
         position: static;
         transform: none;
-
         max-width: none;
         width: auto;
-
         margin: 0;
-
         padding: 10px 18px;
-
         font-size: 26px;
         line-height: 1.2;
-
         text-align: center;
       }
 
@@ -237,11 +231,9 @@
       .hamburger-btn {
         margin-right: 15px;
       }
-
     }
 
     @media (min-width:1025px) {
-
       .header {
         position: fixed;
         top: 0px;
@@ -290,10 +282,10 @@
         font-family: sans-serif;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
       }
+
       .hamburger-btn {
         margin-right: 15px;
       }
-
     }
 
     /* Tab đang chọn */
@@ -304,7 +296,6 @@
       font-weight: bold;
     }
 
-    /*20/4/26*/
     /* Container giữ vị trí góc phải */
     .menu-container {
       position: static;
@@ -315,7 +306,6 @@
       z-index: 1000;
     }
 
-    /* Vẽ nút Hamburger giống ảnh bạn tải lên */
     .hamburger-btn {
       background-color: #222;
       /* Màu nền xám đen */
@@ -407,7 +397,7 @@
       align-items: center;
     }
 
-    /* Khung trắng chứa nội dung ở giữa (thiết kế giống ảnh 2) */
+    /* Khung trắng chứa nội dung ở giữa */
     .menu-modal-content {
       background-color: white;
       width: 90%;
@@ -454,7 +444,7 @@
       padding: 6px 20px;
       border-radius: 20px;
       font-family: sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       color: #333;
       z-index: 1000;
       /* Nổi lên trên bản đồ */
@@ -467,11 +457,21 @@
     }
 
     .leaflet-bottom.leaflet-left {
-      bottom: 70px !important;
+      bottom: 80px !important;
       left: 5px;
     }
 
-    /*20/4/26*/
+    .modal-content,
+    .info-content,
+    .popup-body {
+      max-height: 75vh;
+      overflow-y: auto;
+
+      -webkit-overflow-scrolling: touch;
+
+      touch-action: pan-y;
+      overscroll-behavior: contain;
+    }
   </style>
 </head>
 
@@ -500,9 +500,6 @@
     </div>
   </div>
   <div id="map">
-    <!--20/4/26-->
-
-
     <div id="topMenuModal" style="display:none;">
       <div class="menu-modal-content">
         <span class="close-menu-btn" onclick="closeTopMenu()">×</span>
@@ -511,7 +508,6 @@
         </div>
       </div>
     </div>
-    <!--20/4/26-->
   </div>
 
   <div id="topMenuModal" style="display:none;">
