@@ -6,7 +6,7 @@
   <title>Công trình số hóa thông tin di tích lịch sử Đình Thần Phú Xuân</title>
 
   <!-- Responsive mobile -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,user-scalable=no">
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -47,6 +47,9 @@
       border-radius: 15px;
       padding: 15px;
       position: relative;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
 
     .close-btn {
@@ -88,32 +91,43 @@
     }
 
     .header {
-      position: absolute;
-      top: 10px;
+      position: fixed;
+      top: 0px;
       left: 0;
       width: 100%;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      padding: 10px 14px;
+      /*background:rgba(255,255,255,.92);*/
+      backdrop-filter: blur(8px);
+      /*box-shadow:0 2px 10px rgba(0,0,0,.12);*/
       z-index: 9999;
     }
 
     .logo {
-      position: absolute;
-      left: 20px;
+      position: static;
+      left: 10px;
       top: 0;
       pointer-events: auto;
     }
 
     .logo img {
-      height: 90px;
+      height: clamp(32px, 5vw, 70px);
+      width: auto;
+      display: block;
     }
 
     .title {
-      position: absolute;
+      position: static;
+      transform: none;
+      margin: 0 15px;
       left: 50%;
       transform: translateX(-50%);
       /*background: rgba(255, 255, 255, 0.9);*/
       padding: 10px 20px;
       border-radius: 10px;
-      font-size: 40px;
+      font-size: clamp(16px, 2.5vw, 40px);
       color: #8B0000;
       text-align: center;
       font-weight: bold;
@@ -121,15 +135,165 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 767px) {
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 58px;
+
+        display: grid;
+        grid-template-columns: 90px 1fr 58px;
+        padding: 0 12px;
+        column-gap: 10px;
+      }
+
       .title {
-        font-size: 16px;
-        padding: 6px 12px;
+        position: static;
+        transform: none;
+        font-size: 15px;
+        max-width: 240px;
+        justify-self: center;
+        display: inline-block;
+        padding: 3px 6px;
+        margin: 0;
+        font-size: 12px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+      }
+
+      .logo {
+        position: static;
       }
 
       .logo img {
-        height: 35px;
+        height: auto;
+        max-width: 75px;
+        display: block;
       }
+
+      .menu-container {
+        position: static;
+        justify-self: end;
+        margin-right: 10px;
+      }
+
+      .hamburger-btn {
+        margin-right: 8px;
+      }
+
+      #map {
+        top: 58px;
+        height: calc(100dvh - 58px);
+      }
+    }
+
+    @media(min-width:768px) and (max-width:1024px) {
+
+      .header {
+        display: grid;
+        grid-template-columns: 170px 1fr 70px;
+
+        padding: 10px 16px;
+        column-gap: 16px;
+
+        height: 78px;
+      }
+
+
+      .logo {
+        position: static;
+      }
+
+      .logo img {
+        max-width: 155px;
+        height: auto;
+      }
+
+      .title {
+        position: static;
+        transform: none;
+
+        max-width: none;
+        width: auto;
+
+        margin: 0;
+
+        padding: 10px 18px;
+
+        font-size: 26px;
+        line-height: 1.2;
+
+        text-align: center;
+      }
+
+      .menu-container {
+        position: static;
+        justify-self: end;
+        margin-right: 8px;
+      }
+
+      .hamburger-btn {
+        margin-right: 15px;
+      }
+
+    }
+
+    @media (min-width:1025px) {
+
+      .header {
+        position: fixed;
+        top: 0px;
+        left: 0;
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 10px 14px;
+        /*background:rgba(255,255,255,.92);*/
+        backdrop-filter: blur(8px);
+        /*box-shadow:0 2px 10px rgba(0,0,0,.12);*/
+        z-index: 9999;
+      }
+
+      .logo {
+        position: static;
+        left: 10px;
+        top: 0;
+        pointer-events: auto;
+      }
+
+      .logo img {
+        height: clamp(32px, 5vw, 70px);
+        width: auto;
+        display: block;
+      }
+
+      .title {
+        position: relative;
+        width: fit-content;
+        transform: none;
+        padding: 10px 18px;
+        line-height: 1.2;
+        transform: none;
+        margin: 0 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        /*background: rgba(255, 255, 255, 0.9);*/
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: clamp(16px, 2.5vw, 40px);
+        color: #8B0000;
+        text-align: center;
+        font-weight: bold;
+        font-family: sans-serif;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+      .hamburger-btn {
+        margin-right: 15px;
+      }
+
     }
 
     /* Tab đang chọn */
@@ -143,7 +307,8 @@
     /*20/4/26*/
     /* Container giữ vị trí góc phải */
     .menu-container {
-      position: absolute;
+      position: static;
+      justify-self: end;
       top: 15px;
       right: 15px;
       /* Đặt sát mép phải */
@@ -278,6 +443,7 @@
     /* Style cho dòng Bản quyền (Copyright) ở cuối trang */
     .custom-footer {
       position: fixed;
+      width: auto;
       bottom: 15px;
       /* Cách mép dưới 15px */
       left: 50%;
@@ -288,7 +454,7 @@
       padding: 6px 20px;
       border-radius: 20px;
       font-family: sans-serif;
-      font-size: 13px;
+      font-size: 12px;
       color: #333;
       z-index: 1000;
       /* Nổi lên trên bản đồ */
@@ -298,6 +464,11 @@
       text-align: center;
       white-space: nowrap;
       /* Giữ chữ trên 1 dòng */
+    }
+
+    .leaflet-bottom.leaflet-left {
+      bottom: 70px !important;
+      left: 5px;
     }
 
     /*20/4/26*/
@@ -314,9 +485,6 @@
     <div class="title">
       Công trình số hóa thông tin<br>di tích lịch sử Đình Thần Phú Xuân
     </div>
-  </div>
-  <div id="map">
-    <!--20/4/26-->
     <div class="menu-container">
       <div class="hamburger-btn" onclick="toggleDropdown()">
         <div class="bar"></div>
@@ -330,6 +498,10 @@
         <a href="#" onclick="openTopMenu('activities'); toggleDropdown()">Hình Ảnh Hoạt Động</a>
       </div>
     </div>
+  </div>
+  <div id="map">
+    <!--20/4/26-->
+
 
     <div id="topMenuModal" style="display:none;">
       <div class="menu-modal-content">
@@ -352,7 +524,8 @@
   </div>
   </div>
   <div class="custom-footer">
-    &copy; 2026 Công trình số hóa thông tin di tích lịch sử Đình Thần Phú Xuân. Thiết kế và phát triển bởi Khoa Công nghệ Thông tin Trường Đại học Mở TP.HCM
+    &copy; 2026 Công trình số hóa thông tin di tích lịch sử Đình Thần Phú Xuân.<br>Thiết kế và phát triển bởi Khoa Công
+    nghệ Thông tin <br>Trường Đại học Mở TP.HCM
   </div>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
