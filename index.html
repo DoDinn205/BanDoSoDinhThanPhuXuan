@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bản đồ số Đình Thần Phú Xuân</title>
+
+  <!-- Responsive mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    body {
+      margin: 0;
+
+
+      padding: 0;
+      height: 100%;
+    }
+
+    #map {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #detailModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow: auto;
+      border-radius: 15px;
+      padding: 15px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background: #eee;
+      border-radius: 8px;
+    }
+
+    .tab-content img {
+      width: 100%;
+      margin: 5px 0;
+      border-radius: 10px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background: #eee;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .header {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+
+    .logo {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      pointer-events: auto;
+    }
+
+    .logo img {
+      height: 90px;
+    }
+
+    .title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      /*background: rgba(255, 255, 255, 0.9);*/
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 40px;
+      color: #8B0000;
+      font-weight: bold;
+      font-family: sans-serif;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 600px) {
+      .title {
+        font-size: 16px;
+        padding: 6px 12px;
+      }
+
+      .logo img {
+        height: 35px;
+      }
+    }
+
+    /* Tab đang chọn */
+    .tabs button.active {
+      background: #4CAF50;
+      /* màu xanh */
+      color: white;
+      font-weight: bold;
+    }
+
+    /*20/4/26*/
+    /* Container giữ vị trí góc phải */
+    .menu-container {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      /* Đặt sát mép phải */
+      z-index: 1000;
+    }
+
+    /* Vẽ nút Hamburger giống ảnh bạn tải lên */
+    .hamburger-btn {
+      background-color: #222;
+      /* Màu nền xám đen */
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      /* Khoảng cách giữa 3 gạch */
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      transition: background 0.2s;
+    }
+
+    .hamburger-btn:hover {
+      background-color: #444;
+      /* Sáng lên một chút khi di chuột vào */
+    }
+
+    /* Vẽ 3 vạch ngang bo tròn đầu */
+    .hamburger-btn .bar {
+      width: 22px;
+      height: 3px;
+      background-color: #ddd;
+      /* Màu xám sáng */
+      border-radius: 3px;
+    }
+
+    /* Khung menu thả xuống */
+    .dropdown-content {
+      display: none;
+      /* Mặc định ẩn */
+      position: absolute;
+      top: 55px;
+      /* Nằm ngay dưới nút hamburger */
+      right: 0;
+      background-color: white;
+      min-width: 220px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    /* Class dùng để hiển thị menu khi click bằng JS */
+    .dropdown-content.show {
+      display: block;
+    }
+
+    /* Style cho các mục chọn trong menu */
+    .dropdown-content a {
+      color: #333;
+      padding: 14px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f8f8f8;
+      color: #8b0000;
+      /* Đổi màu chữ khi lướt qua */
+      font-weight: bold;
+    }
+
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+
+    /* Nền tối mờ phủ kín toàn màn hình */
+    #topMenuModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      /* Màu đen mờ */
+      z-index: 9999;
+      /* Đảm bảo nổi lên trên cùng */
+
+      /* 2 dòng này giúp nội dung luôn nằm chính giữa màn hình */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Khung trắng chứa nội dung ở giữa (thiết kế giống ảnh 2) */
+    .menu-modal-content {
+      background-color: white;
+      width: 90%;
+      max-width: 600px;
+      /* Độ rộng của bảng */
+      max-height: 80vh;
+      /* Chiều cao tối đa bằng 80% màn hình */
+      padding: 25px;
+      border-radius: 12px;
+      /* Bo góc */
+      position: relative;
+      overflow-y: auto;
+      /* Tự động có thanh cuộn nếu nội dung dài */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      font-family: sans-serif;
+    }
+
+    /* Nút X đóng bảng ở góc phải trên */
+    .close-menu-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .close-menu-btn:hover {
+      color: red;
+    }
+
+    /* Style cho dòng Bản quyền (Copyright) ở cuối trang */
+    .custom-footer {
+      position: fixed;
+      bottom: 15px;
+      /* Cách mép dưới 15px */
+      left: 50%;
+      transform: translateX(-50%);
+      /* Căn giữa chính xác */
+      background: rgba(255, 255, 255, 0.85);
+      /* Nền trắng hơi trong suốt */
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-family: sans-serif;
+      font-size: 13px;
+      color: #333;
+      z-index: 1000;
+      /* Nổi lên trên bản đồ */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      /* Cho phép click xuyên qua nếu lỡ bấm trúng bản đồ phía dưới chữ */
+      text-align: center;
+      white-space: nowrap;
+      /* Giữ chữ trên 1 dòng */
+    }
+
+    /*20/4/26*/
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="logo.png" alt="logo">
+    </div>
+    <!-- Tiêu đề -->
+    <div class="title">
+      Bản đồ số Đình Thần Phú Xuân
+    </div>
+  </div>
+  <div id="map">
+    <!--20/4/26-->
+    <div class="menu-container">
+      <div class="hamburger-btn" onclick="toggleDropdown()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+
+      <div id="dropdownMenu" class="dropdown-content">
+        <a href="#" onclick="openTopMenu('info'); toggleDropdown()">Thông Tin Đình Thần</a>
+        <a href="#" onclick="openTopMenu('temple_images'); toggleDropdown()">Hình Ảnh Đình Thần</a>
+        <a href="#" onclick="openTopMenu('activities'); toggleDropdown()">Hình Ảnh Hoạt Động</a>
+      </div>
+    </div>
+
+    <div id="topMenuModal" style="display:none;">
+      <div class="menu-modal-content">
+        <span class="close-menu-btn" onclick="closeTopMenu()">×</span>
+        <h2 id="menuModalTitle" style="margin-top: 0;">Tiêu đề</h2>
+        <div id="menuModalBody">
+        </div>
+      </div>
+    </div>
+    <!--20/4/26-->
+  </div>
+
+  <div id="topMenuModal" style="display:none;">
+    <div class="menu-modal-content">
+      <span class="close-menu-btn" onclick="closeTopMenu()">×</span>
+      <h2 id="menuModalTitle" style="margin-top: 0;">Tiêu đề</h2>
+      <div id="menuModalBody">
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="custom-footer">
+    &copy; 2026 Bản đồ số Đình Thần Phú Xuân. Thiết kế và phát triển bởi Khoa Công nghệ Thông tin Trường Đại học Mở TP.HCM
+  </div>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script src="script.js"></script>
+
+</body>
+<div id="detailModal" style="display:none;">
+  <div class="modal-content">
+
+    <!-- Nút đóng -->
+    <span class="close-btn" onclick="closeModal()">×</span>
+
+    <!-- Tiêu đề -->
+    <h2 id="modalTitle"></h2>
+
+    <!-- Tab -->
+    <div class="tabs">
+      <button id="btn-info" onclick="showTab('info')">Thông tin</button>
+      <button id="btn-images" onclick="showTab('images')">Hình ảnh</button>
+    </div>
+
+    <!-- Nội dung -->
+    <div id="tab-info" class="tab-content"></div>
+    <div id="tab-images" class="tab-content" style="display:none;"></div>
+
+  </div>
+</div>
+
+</html>
